@@ -20,7 +20,8 @@ function getDefaultColumns({ idType }: GetDefaultColumnsOptions) {
   return {
     id: (idType === 'uuid' ? uuid('id') : text('id'))
       .primaryKey()
-      .$defaultFn(() => generateId()),
+      .$defaultFn(() => generateId())
+      .notNull(),
     createdAt: timestamp('created_at', {
       withTimezone: true,
       mode: 'date',

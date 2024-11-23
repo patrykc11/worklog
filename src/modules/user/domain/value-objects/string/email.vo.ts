@@ -1,5 +1,5 @@
 import { EMAIL_REGEX } from '@worklog/shared/definitions';
-import { ValueObject } from '../value-object';
+import { ValueObject } from '../../../../../shared/architecture/domain/value-objects/value-object';
 
 export class Email extends ValueObject<string> {
   constructor(value: string) {

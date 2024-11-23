@@ -10,6 +10,7 @@ export const users = basePgTable(
     email: varchar('email', { length: 255 }).notNull(),
     password: varchar('password', { length: 255 }).notNull(),
     isEmailConfirmed: boolean('is_email_confirmed').default(false),
+    refreshToken: text('refresh_token'),
     roles: text('roles')
       .array()
       .$type<UserRole[]>()
