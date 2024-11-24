@@ -6,6 +6,7 @@ import { ConfigOptions } from './config';
 import { IncomingMessage } from 'http';
 import { DrizzleModule } from './modules/common/drizzle/drizzle.module';
 import { UserUiRestModule } from './modules/user/ui-rest/user-ui-rest.module';
+import { AuthUiRestModule } from './modules/auth/auth.module';
 
 const prettyTransport: any = PinoPretty({
   hideObject: true,
@@ -45,9 +46,7 @@ const prettyTransport: any = PinoPretty({
     }),
     DrizzleModule,
     UserUiRestModule,
-    // AuthModule,
-    // WorklogModule,
-    // UserModule,
+    AuthUiRestModule,
   ],
 })
 export class AppModule {}

@@ -1,18 +1,20 @@
 import {
-  BadRequestException,
   Body,
   Controller,
-  Get,
   HttpStatus,
   Param,
   ParseUUIDPipe,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserService } from '../../application/services/user.service';
 import { DescribeApi } from '@worklog/shared/utils';
 import { ChangeRoleDto } from './dtos/change-role.dto';
 import { UserRole } from '@worklog/shared/definitions';
+import { Roles } from '@worklog/modules/auth/utils/decorators/roles.decorator';
+import { AuthenticationGuard } from '@worklog/modules/auth/utils/guards/authentication.guard';
+import { RolesGuard } from '@worklog/modules/auth/utils/guards/roles.guard';
 
 @ApiTags('Users')
 @Controller({
@@ -22,6 +24,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('/:id/role')
+  @UseGuards(AuthenticationGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @DescribeApi({
     operationOptions: {
       summary: 'Add user role',
@@ -41,7 +45,6 @@ export class UserController {
     },
   })
   public changeUserRole(
-    // @CurrentUser() user: AuthenticatedUser,
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: ChangeRoleDto,
   ): any {
