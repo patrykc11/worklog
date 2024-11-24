@@ -1,5 +1,5 @@
 {
-  "id": "c2297bd9-bfb7-41bf-b540-981dbb9d3388",
+  "id": "8b1637a8-a30d-4ea8-aa94-e78e1b1e0f04",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -88,6 +88,12 @@
           "notNull": false,
           "default": false
         },
+        "refresh_token": {
+          "name": "refresh_token",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
         "roles": {
           "name": "roles",
           "type": "text[]",
@@ -150,13 +156,13 @@
         },
         "user_id": {
           "name": "user_id",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },
         "project_id": {
           "name": "project_id",
-          "type": "text",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": true
         },

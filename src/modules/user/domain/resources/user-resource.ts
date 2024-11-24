@@ -1,5 +1,8 @@
+import { extendZodWithOpenApi } from '@anatine/zod-openapi';
 import { UserRole } from '@worklog/shared/definitions';
 import { z } from 'zod';
+
+extendZodWithOpenApi(z);
 
 export const userRegisterSchema = z.object({
   email: z.string().email(),
@@ -52,6 +55,10 @@ export const userResourceSchema = z.object({
   createdAt: z.coerce.date().openapi({
     format: 'date-time',
   }),
+});
+
+export const changeUserRoleSchema = userResourceSchema.pick({
+  roles: true,
 });
 
 export type ConfirmEmailResource = z.infer<typeof confirEmailSchema>;

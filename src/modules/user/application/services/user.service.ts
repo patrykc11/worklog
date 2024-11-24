@@ -71,10 +71,10 @@ export class UserService {
     await this.userRepository.update(user);
   }
 
-  public async changeRole({ id, roles }: ChangeRolesResource): Promise<void> {
+  public async changeRole(options: ChangeRolesResource): Promise<void> {
     const user = await this.userRepository.findOne({
       type: 'id',
-      value: id,
+      value: options.id,
     });
 
     if (!user) {
@@ -84,7 +84,7 @@ export class UserService {
     }
 
     user.update({
-      roles,
+      roles: options.roles,
     });
 
     await this.userRepository.update(user);

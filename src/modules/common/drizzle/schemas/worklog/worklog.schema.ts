@@ -1,4 +1,4 @@
-import { index, text, timestamp } from 'drizzle-orm/pg-core';
+import { index, text, timestamp, uuid } from 'drizzle-orm/pg-core';
 import { basePgTable } from '../../tables/base-pg-table';
 import { relations } from 'drizzle-orm';
 import { DateUtil } from '@worklog/shared/utils';
@@ -9,10 +9,10 @@ export const worklogs = basePgTable(
   'worklogs',
   {
     description: text('description').notNull(),
-    userId: text('user_id')
+    userId: uuid('user_id')
       .notNull()
       .references(() => users.id),
-    projectId: text('project_id')
+    projectId: uuid('project_id')
       .references(() => projects.id)
       .notNull(),
     startDate: timestamp('start_date', {

@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 	"email" varchar(255) NOT NULL,
 	"password" varchar(255) NOT NULL,
 	"is_email_confirmed" boolean DEFAULT false,
+	"refresh_token" text,
 	"roles" text[] DEFAULT ARRAY[]::text[] NOT NULL
 );
 --> statement-breakpoint
@@ -21,8 +22,8 @@ CREATE TABLE IF NOT EXISTS "worklogs" (
 	"created_at" timestamp with time zone NOT NULL,
 	"updated_at" timestamp with time zone NOT NULL,
 	"description" text NOT NULL,
-	"user_id" text NOT NULL,
-	"project_id" text NOT NULL,
+	"user_id" uuid NOT NULL,
+	"project_id" uuid NOT NULL,
 	"start_date" timestamp with time zone NOT NULL,
 	"finish_date" timestamp with time zone
 );
