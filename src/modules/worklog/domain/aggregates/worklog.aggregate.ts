@@ -1,5 +1,5 @@
 import { UserId } from '@worklog/modules/user/domain/value-objects';
-import { WorklogId } from '../value-objects/id/job-id.vo';
+import { WorklogId } from '../value-objects/id/worklog-id.vo';
 import { ProjectId } from '../value-objects/id/project-id.vo';
 import { StartWork, WorklogState } from '../ts/types/worklog.type';
 import { DateUtil } from '@worklog/shared/utils';

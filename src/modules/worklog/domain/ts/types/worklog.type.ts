@@ -1,4 +1,4 @@
-import { WorklogId } from '../../value-objects/id/job-id.vo';
+import { WorklogId } from '../../value-objects/id/worklog-id.vo';
 import { UserId } from '@worklog/modules/user/domain/value-objects';
 import { ProjectId } from '../../value-objects/id/project-id.vo';
 

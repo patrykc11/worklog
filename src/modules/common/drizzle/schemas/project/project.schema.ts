@@ -4,7 +4,6 @@ import { relations } from 'drizzle-orm';
 import { worklogs } from '../worklog/worklog.schema';
 
 export const projects = basePgTable('projects', {
-  description: text('description').notNull(),
   name: text('name').notNull(),
 });
 

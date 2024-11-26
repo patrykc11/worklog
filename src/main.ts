@@ -39,8 +39,6 @@ async function bootstrap() {
         type: 'http',
         scheme: 'Bearer',
         in: 'Header',
-        description:
-          'Authorization token obtained from the /auth/token endpoint',
       },
       API_BEARER_SECURITY_NAME,
     )

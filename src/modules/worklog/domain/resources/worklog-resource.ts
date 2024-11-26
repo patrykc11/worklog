@@ -2,8 +2,13 @@ import { z } from 'zod';
 
 export const startJobSchema = z.object({
   description: z.string().min(1).max(200),
-  projectId: z.string().uuid(),
-  userId: z.string().uuid(),
+  projectId: z.string().uuid().min(1),
+  userId: z.string().uuid().min(1),
+});
+
+export const startJobBodySchema = startJobSchema.pick({
+  description: true,
+  projectId: true,
 });
 
 export const finishJobSchema = z.object({

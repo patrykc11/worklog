@@ -8,6 +8,13 @@
       "when": 1732448110656,
       "tag": "0000_abnormal_saracen",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1732647778105,
+      "tag": "0001_majestic_nuke",
+      "breakpoints": true
     }
   ]
 }
