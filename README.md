@@ -1,73 +1,86 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Work Time Tracker Application
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## **Application Description**
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+The Work Time Tracker Application is designed for efficient organization of team and individual work. Below are the features offered by the application:
 
-## Description
+### **Features**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+1. **User Registration:**
 
-## Installation
+   - Register using email and password.
+   - After registration, the application generates a confirmation link. The link is returned in the registration response to facilitate testing (without sending an email).
 
-```bash
-$ pnpm install
-```
+2. **Email Confirmation:**
 
-## Running the app
+   - Endpoint for confirming a user's email address using the link returned during registration.
 
-```bash
-# development
-$ pnpm run start
+3. **User Login:**
 
-# watch mode
-$ pnpm run start:dev
+   - Log in using email and password.
 
-# production mode
-$ pnpm run start:prod
-```
+4. **Role-based Access System:**
 
-## Test
+   - Two roles in the application:
+     - **Administrator**: Full access to application management, including viewing the total work time of all users and adding new projects.
+     - **User**: Limited access, allowing users to track their work time and view available projects.
 
-```bash
-# unit tests
-$ pnpm run test
+5. **Work Time Tracking:**
 
-# e2e tests
-$ pnpm run test:e2e
+   - Start the work timer with a description of the task and select the project being worked on.
+   - Stop the work timer, saving the data in the system.
 
-# test coverage
-$ pnpm run test:cov
-```
+6. **Work Time Reporting:**
 
-## Support
+   - Retrieve the total work time of the currently logged-in user, broken down by days, in a format suitable for visualization on a chart.
+   - Administrator endpoint to:
+     - Retrieve the total work time of all users, broken down by days.
+     - Filter reports by users.
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+7. **Project Management:**
+   - Administrators can add new projects.
+   - Users can view the list of available projects with sorting and pagination options.
 
-## Stay in touch
+---
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## **How to Run the Application**
 
-## License
+### **1. Requirements**
 
-Nest is [MIT licensed](LICENSE).
+- **Node.js** (recommended version 16.x or higher)
+- **Docker** and **Docker Compose** (optional, if using containers)
+- **Database**: PostgreSQL
+
+---
+
+### **2. Running Locally**
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/patrykc11/worklog.git
+   cd worklog
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Configure environment variables**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Run database migrations**
+
+   ```bash
+   pnpm run db:migrate
+   ```
+
+5. **Start the application**
+   ```bash
+   pnpm run start
+   ```
