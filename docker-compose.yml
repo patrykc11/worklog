@@ -10,3 +10,17 @@ services:
       - ./.docker/postgres.env
     volumes:
       - ./.docker/data/postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3010:3010'
+    volumes:
+      - ./:/app
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    command: ['pnpm', 'run', 'start']

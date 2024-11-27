@@ -3,15 +3,13 @@ import { PassportStrategy } from '@nestjs/passport';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
-import {
-  REFRESH_TOKEN_BODY_FIELD,
-  REFRESH_TOKEN_STRATEGY_NAME,
-} from '../constants';
+import { REFRESH_TOKEN_STRATEGY_NAME } from '../constants';
 import { AuthenticationService } from '../services/authentication.service';
 import {
   RefreshTokenPayload,
   RefreshTokenValidationResult,
 } from '../ts/interfaces/token.interfaces';
+import { getJwtFromHeaders } from '../utils/helpers/jwt';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
@@ -22,7 +20,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
     const { refreshTokenSecret, algorithms, issuer } = authService.getConfig();
 
     super({
-      jwtFromRequest: ExtractJwt.fromBodyField(REFRESH_TOKEN_BODY_FIELD),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: refreshTokenSecret,
       issuer,
@@ -35,11 +33,11 @@ export class RefreshTokenStrategy extends PassportStrategy(
     req: Request,
     payload: RefreshTokenPayload,
   ): RefreshTokenValidationResult {
-    const data = req.body;
+    const refreshToken = getJwtFromHeaders(req.headers || {});
 
     return {
       userId: payload.sub,
-      refreshToken: data['refreshToken'],
+      refreshToken,
     };
   }
 }

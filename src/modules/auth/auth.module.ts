@@ -7,6 +7,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { UserService } from '../user/application/services/user.service';
 import { AccessTokenStrategy } from './strategies/access-token.strategy';
 import { AuthController } from './controllers/auth.controller';
+import { RefreshTokenStrategy } from './strategies/refresh-token.strategy';
 
 @Module({
   imports: [
@@ -16,7 +17,12 @@ import { AuthController } from './controllers/auth.controller';
     }),
     UserModule,
   ],
-  providers: [AuthenticationService, UserService, AccessTokenStrategy],
+  providers: [
+    AuthenticationService,
+    UserService,
+    AccessTokenStrategy,
+    RefreshTokenStrategy,
+  ],
   controllers: [AuthController],
   exports: [AuthenticationService],
 })
