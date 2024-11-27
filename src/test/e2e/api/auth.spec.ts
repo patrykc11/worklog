@@ -5,6 +5,7 @@ import * as request from 'supertest';
 import { TestHelper } from '../helper/test-helper';
 import { JWTTokens } from '@worklog/modules/auth/ts/interfaces/token.interfaces';
 import { User } from '@worklog/modules/user/domain/aggregates/user.aggregate';
+import { UserRole } from '@worklog/shared/definitions';
 
 describe('Auth', () => {
   let app: INestApplication;
@@ -15,8 +16,9 @@ describe('Auth', () => {
 
     app = await application.init();
 
-    adminUser = await TestHelper.createRandomAdminUser(
+    adminUser = await TestHelper.createRandomUser(
       userRepository,
+      [UserRole.USER, UserRole.ADMIN],
       '123@123.pl',
       'zaq1@WSX',
     );

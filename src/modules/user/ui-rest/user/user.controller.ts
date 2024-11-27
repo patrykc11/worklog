@@ -44,10 +44,10 @@ export class UserController {
       status: HttpStatus.OK,
     },
   })
-  public changeUserRole(
+  public async changeUserRole(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: ChangeRoleDto,
-  ): any {
+  ) {
     console.log(id);
     return this.userService.changeRole({
       id: id,

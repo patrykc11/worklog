@@ -80,6 +80,8 @@ export class WorklogService {
       userId: data.userId,
     });
 
+    await this.worklogRepository.create(worklog);
+
     return worklog.id.value;
   }
 
@@ -90,13 +92,12 @@ export class WorklogService {
         message: 'User not found',
       });
     }
-
     const worklog = await this.worklogRepository.findOne({
       type: 'id',
       value: data.id,
     });
 
-    if (!worklog || worklog.userId.value === data.userId) {
+    if (!worklog || worklog.userId.value !== data.userId) {
       throw new NotFoundException({
         message: 'Worklog not found',
       });
@@ -110,7 +111,7 @@ export class WorklogService {
     usersIds?: string[] | null,
     sinceDate?: Date | null,
     toDate?: Date | null,
-  ): Promise<Map<string, number>> {
+  ): Promise<object> {
     const responseMap = new Map<string, number>();
 
     const allWorklogs = await this.worklogRepository.findMany({
@@ -133,7 +134,7 @@ export class WorklogService {
       }
     });
 
-    return responseMap;
+    return Object.fromEntries(responseMap);
   }
 
   private async finishNotFinishedWorks(userId: string): Promise<void> {

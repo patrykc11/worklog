@@ -35,8 +35,10 @@ export class ProjectController {
       status: HttpStatus.CREATED,
     },
   })
-  public addNewProject(@Body() dto: CreateNewProjectDto): any {
-    return this.worklogService.addProject(dto);
+  public async addNewProject(@Body() dto: CreateNewProjectDto) {
+    return {
+      id: await this.worklogService.addProject(dto),
+    };
   }
 
   @Get('/')
@@ -57,7 +59,7 @@ export class ProjectController {
       },
     ],
   })
-  public getProjects(@Query() pageOptions: OffsetPageOptionsDto): any {
+  public async getProjects(@Query() pageOptions: OffsetPageOptionsDto) {
     return this.worklogService.getAllProjects(pageOptions);
   }
 }

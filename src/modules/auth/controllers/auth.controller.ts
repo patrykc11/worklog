@@ -45,7 +45,7 @@ export class AuthController {
       schema: RegisterUserDtoResponse,
     },
   })
-  public register(
+  public async register(
     @Body() { email, password }: RegisterUserDto,
   ): Promise<JWTTokens> {
     return this.authService.register({
@@ -64,7 +64,7 @@ export class AuthController {
       status: 200,
     },
   })
-  public loginUser(
+  public async loginUser(
     @Body() { email, password }: LoginUserDto,
   ): Promise<JWTTokens> {
     return this.authService.login({ email, password });
@@ -81,7 +81,7 @@ export class AuthController {
       status: 200,
     },
   })
-  public refreshTokens(
+  public async refreshTokens(
     @Req() req: RequestWithRefreshToken,
   ): Promise<JWTTokens> {
     return this.authService.refreshTokenRequest({
@@ -97,7 +97,7 @@ export class AuthController {
       description: 'Verify user code',
     },
   })
-  public verify(
+  public async verify(
     @Body() { email }: VerifyUserDto,
     @CurrentUser() user: AuthenticatedUser,
   ): Promise<void> {
@@ -110,14 +110,14 @@ export class AuthController {
   @UseGuards(AuthenticationGuard, RolesGuard)
   @Roles(UserRole.USER)
   @Get('/test-user')
-  public testUser(@CurrentUser() user: AuthenticatedUser) {
+  public async testUser(@CurrentUser() user: AuthenticatedUser) {
     return user;
   }
 
   @UseGuards(AuthenticationGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
   @Get('/test-admin')
-  public testAdmin(@CurrentUser() user: AuthenticatedUser) {
+  public async testAdmin(@CurrentUser() user: AuthenticatedUser) {
     return user;
   }
 }

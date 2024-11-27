@@ -15,14 +15,16 @@ import {
 } from '@worklog/shared/definitions';
 import { UserRepository } from '@worklog/modules/user/application/ports/user.repository';
 import { User } from '@worklog/modules/user/domain/aggregates/user.aggregate';
-
-// import { User } from '@worklog/modules/user/domain/aggregates/user.aggregate';
+import { ProjectRepository } from '@worklog/modules/worklog/application/ports/project.repository';
+import { WorklogRepository } from '@worklog/modules/worklog/application/ports/worklog.repository';
 
 export class TestHelper {
   public static async prepareFixture(): Promise<{
     application: INestApplication;
     authService: AuthenticationService;
     userRepository: UserRepository;
+    projectRepository: ProjectRepository;
+    worklogRepository: WorklogRepository;
   }> {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -33,6 +35,10 @@ export class TestHelper {
     );
 
     const userRepository = moduleFixture.get<UserRepository>(UserRepository);
+    const projectRepository =
+      moduleFixture.get<ProjectRepository>(ProjectRepository);
+    const worklogRepository =
+      moduleFixture.get<WorklogRepository>(WorklogRepository);
 
     const application = moduleFixture.createNestApplication();
 
@@ -46,11 +52,14 @@ export class TestHelper {
       application,
       authService,
       userRepository,
+      projectRepository,
+      worklogRepository,
     };
   }
 
-  public static async createRandomAdminUser(
+  public static async createRandomUser(
     userRepository: UserRepository,
+    roles: UserRole[] = [UserRole.USER],
     email?: string,
     password?: string,
   ): Promise<User> {
@@ -63,7 +72,7 @@ export class TestHelper {
 
     newUser.update({
       isEmailConfirmed: true,
-      roles: [UserRole.ADMIN, UserRole.USER],
+      roles: roles,
     });
 
     await userRepository.update(newUser);

@@ -39,14 +39,16 @@ export class WorklogController {
       status: HttpStatus.CREATED,
     },
   })
-  public startWork(
+  public async startWork(
     @CurrentUser() user: AuthenticatedUser,
     @Body() dto: StartWorkDto,
-  ): any {
-    return this.worklogService.startWork({
-      ...dto,
-      userId: user.id,
-    });
+  ) {
+    return {
+      id: await this.worklogService.startWork({
+        ...dto,
+        userId: user.id,
+      }),
+    };
   }
 
   @Patch('/:id/finish')
@@ -70,10 +72,10 @@ export class WorklogController {
       status: HttpStatus.OK,
     },
   })
-  public finishWork(
+  public async finishWork(
     @Param('id', ParseUUIDPipe) id: string,
     @CurrentUser() user: AuthenticatedUser,
-  ): any {
+  ) {
     return this.worklogService.finishWork({
       id,
       userId: user.id,
@@ -112,11 +114,11 @@ export class WorklogController {
       status: HttpStatus.OK,
     },
   })
-  public getAllUsersWorkingTime(
+  public async getAllUsersWorkingTime(
     @Query('usersIds') usersIds?: string[],
     @Query('sinceDate') sinceDate?: Date,
     @Query('toDate') toDate?: Date,
-  ): any {
+  ) {
     return this.worklogService.getTotalWorklogForAllUsers(
       usersIds,
       sinceDate,
@@ -147,11 +149,11 @@ export class WorklogController {
       status: HttpStatus.OK,
     },
   })
-  public getWorkingTIme(
+  public async getWorkingTIme(
     @CurrentUser() user: AuthenticatedUser,
     @Query('sinceDate') sinceDate?: Date,
     @Query('toDate') toDate?: Date,
-  ): any {
+  ) {
     return this.worklogService.getTotalWorklogForAllUsers(
       [user.id],
       sinceDate,
