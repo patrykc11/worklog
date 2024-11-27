@@ -1,18 +1,20 @@
 import { Test, type TestingModule } from '@nestjs/testing';
 
-// import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { sql } from 'drizzle-orm';
 import * as postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { INestApplication, VersioningType } from '@nestjs/common';
 
-import { ConfigService } from '@nestjs/config';
 import { AppModule } from '@worklog/app.module';
 import { AuthenticationService } from '@worklog/modules/auth/services/authentication.service';
 import {
   API_DEFAULT_VERSION,
   API_VERSION_PREFIX,
+  UserRole,
 } from '@worklog/shared/definitions';
+import { UserRepository } from '@worklog/modules/user/application/ports/user.repository';
+import { User } from '@worklog/modules/user/domain/aggregates/user.aggregate';
 
 // import { User } from '@worklog/modules/user/domain/aggregates/user.aggregate';
 
@@ -20,6 +22,7 @@ export class TestHelper {
   public static async prepareFixture(): Promise<{
     application: INestApplication;
     authService: AuthenticationService;
+    userRepository: UserRepository;
   }> {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -28,6 +31,8 @@ export class TestHelper {
     const authService = moduleFixture.get<AuthenticationService>(
       AuthenticationService,
     );
+
+    const userRepository = moduleFixture.get<UserRepository>(UserRepository);
 
     const application = moduleFixture.createNestApplication();
 
@@ -40,23 +45,31 @@ export class TestHelper {
     return {
       application,
       authService,
+      userRepository,
     };
   }
 
-  // public static async createRandomUser(
-  //   userRepository: UserRepository,
-  //   email?: string,
-  //   password?: string,
-  // ): Promise<User> {
-  //   const newUser = await User.register({
-  //     email: email ? email : faker.internet.email(),
-  //     password: password ? password : faker.internet.password(),
-  //   });
+  public static async createRandomAdminUser(
+    userRepository: UserRepository,
+    email?: string,
+    password?: string,
+  ): Promise<User> {
+    const newUser = await User.register({
+      email: email ? email : faker.internet.email(),
+      password: password ? password : faker.internet.password(),
+    });
 
-  //   await userRepository.create(newUser);
+    await userRepository.create(newUser);
 
-  //   return newUser;
-  // }
+    newUser.update({
+      isEmailConfirmed: true,
+      roles: [UserRole.ADMIN, UserRole.USER],
+    });
+
+    await userRepository.update(newUser);
+
+    return newUser;
+  }
 
   public static async cleanDatabase(): Promise<void> {
     const databaseUrl = process.env['DATABASE_URL'];
