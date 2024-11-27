@@ -17,6 +17,9 @@ import { UserRepository } from '@worklog/modules/user/application/ports/user.rep
 import { User } from '@worklog/modules/user/domain/aggregates/user.aggregate';
 import { ProjectRepository } from '@worklog/modules/worklog/application/ports/project.repository';
 import { WorklogRepository } from '@worklog/modules/worklog/application/ports/worklog.repository';
+import { Project } from '@worklog/modules/worklog/domain/aggregates/project.aggregate';
+import { WorklogService } from '@worklog/modules/worklog/application/services/worklog.service';
+import { DateUtil } from '@worklog/shared/utils';
 
 export class TestHelper {
   public static async prepareFixture(): Promise<{
@@ -25,6 +28,7 @@ export class TestHelper {
     userRepository: UserRepository;
     projectRepository: ProjectRepository;
     worklogRepository: WorklogRepository;
+    worklogService: WorklogService;
   }> {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -39,7 +43,7 @@ export class TestHelper {
       moduleFixture.get<ProjectRepository>(ProjectRepository);
     const worklogRepository =
       moduleFixture.get<WorklogRepository>(WorklogRepository);
-
+    const worklogService = moduleFixture.get<WorklogService>(WorklogService);
     const application = moduleFixture.createNestApplication();
 
     application.enableShutdownHooks().enableVersioning({
@@ -54,6 +58,7 @@ export class TestHelper {
       userRepository,
       projectRepository,
       worklogRepository,
+      worklogService,
     };
   }
 
@@ -78,6 +83,37 @@ export class TestHelper {
     await userRepository.update(newUser);
 
     return newUser;
+  }
+
+  public static async createRandomProject(
+    worklogService: WorklogService,
+    name: string,
+  ): Promise<string> {
+    const newProjectId = await worklogService.addProject({ name });
+
+    return newProjectId;
+  }
+
+  public static async createRandomWorklogs(
+    worklogRepository: WorklogRepository,
+    worklogService: WorklogService,
+    projectId: string,
+    userId: string,
+    workingHours: number = 10,
+  ): Promise<void> {
+    const worklogId = await worklogService.startWork({
+      projectId,
+      userId,
+      description: 'New worklog',
+    });
+
+    const worklog = await worklogRepository.findOne({
+      value: worklogId,
+      type: 'id',
+    });
+
+    worklog.finishDate = DateUtil.addHours(workingHours);
+    await worklogRepository.update(worklog);
   }
 
   public static async cleanDatabase(): Promise<void> {

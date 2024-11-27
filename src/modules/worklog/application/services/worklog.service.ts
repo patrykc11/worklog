@@ -123,9 +123,8 @@ export class WorklogService {
     allWorklogs.worklogs.forEach((worklog) => {
       const finishDate = worklog.finishDate;
       const startDate = worklog.startDate;
-
       if (finishDate && startDate) {
-        const duration = DateUtil.diff(startDate, finishDate, TimeUnit.Hour);
+        const duration = DateUtil.diffInHours(startDate, finishDate);
         const dateKey = finishDate.toISOString().split('T')[0];
 
         const totalHours = responseMap.get(dateKey) ?? 0;

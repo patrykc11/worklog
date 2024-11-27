@@ -10,7 +10,8 @@ describe('Worklogs', () => {
   let adminUser;
 
   beforeAll(async () => {
-    const { application, userRepository } = await TestHelper.prepareFixture();
+    const { application, userRepository, worklogService, worklogRepository } =
+      await TestHelper.prepareFixture();
     app = await application.init();
 
     adminUser = await TestHelper.createRandomUser(
@@ -18,6 +19,34 @@ describe('Worklogs', () => {
       [UserRole.USER, UserRole.ADMIN],
       'xyz@123.pl',
       'zaq1@WSX',
+    );
+
+    const projectId = await TestHelper.createRandomProject(
+      worklogService,
+      'test project',
+    );
+
+    await TestHelper.createRandomWorklogs(
+      worklogRepository,
+      worklogService,
+      projectId,
+      adminUser.id.value,
+    );
+
+    await TestHelper.createRandomWorklogs(
+      worklogRepository,
+      worklogService,
+      projectId,
+      adminUser.id.value,
+      2,
+    );
+
+    await TestHelper.createRandomWorklogs(
+      worklogRepository,
+      worklogService,
+      projectId,
+      adminUser.id.value,
+      3,
     );
   });
 

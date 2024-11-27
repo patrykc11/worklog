@@ -25,6 +25,7 @@ export class Worklog implements WorklogState {
       projectId: new ProjectId(data.projectId),
       userId: new UserId(data.userId),
       startDate: DateUtil.now,
+      finishDate: null,
       createdAt: DateUtil.now,
       updatedAt: DateUtil.now,
     });

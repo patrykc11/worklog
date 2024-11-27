@@ -47,7 +47,10 @@ export class WorklogDrizzleRepository implements WorklogRepository {
     options: FindNotFinishedWorklogsOptions,
   ): Promise<Worklog[]> {
     const worklogs = await this.db.query.worklogs.findMany({
-      where: eq(schemas.worklogs.userId, options.userId),
+      where: and(
+        eq(schemas.worklogs.userId, options.userId),
+        eq(schemas.worklogs.finishDate, null),
+      ),
     });
 
     return worklogs.map((worklog) => WorklogMapper.toDomain(worklog));

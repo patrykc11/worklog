@@ -134,15 +134,11 @@ export class DateUtil {
     return interval.contains(DateTime.fromJSDate(date));
   }
 
-  public static diff(
-    start: DatePrimitive,
-    end: DatePrimitive,
-    duration: TimeUnit,
-  ): number {
+  public static diffInHours(start: DatePrimitive, end: DatePrimitive): number {
     const startDate = DateTime.fromJSDate(this.fromPrimitive(start));
     const endDate = DateTime.fromJSDate(this.fromPrimitive(end));
 
-    return startDate.diff(endDate).get(duration);
+    return Math.round(endDate.diff(startDate, 'hours').hours);
   }
 
   public static toTimestamp(value?: Date | number | string): number {
